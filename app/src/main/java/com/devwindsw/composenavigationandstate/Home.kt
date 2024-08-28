@@ -27,20 +27,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
-private const val TAG = "ComposeNavigationAndState"
-
 @Composable
 fun Home(modifier: Modifier = Modifier) {
+    val viewModel: CustomViewModel = CustomViewModel()
     var currentScreen: Destination by remember { mutableStateOf(Fly) }
-    val onPeopleChanged: (Int) -> Unit = { Log.i(TAG, "onPeopleChanged ${it}") }
-    val onToDestinationChanged: (String) -> Unit = { Log.i(TAG, "onToDestinationChanged ${it}") }
+    val onPeopleChanged: (Int) -> Unit = { viewModel.updatePeople(it) }
+    val onToDestinationChanged: (String) -> Unit = { viewModel.toDestinationChanged(it) }
     Scaffold(
         topBar = {
             CustomTabBar(modifier) { tabBarModifier ->
                 CustomTabs(
                     modifier = tabBarModifier,
                     allScreens = customTabRowScreens,
-                    onTabSelected = { screen -> currentScreen = screen },
+                    onTabSelected = { screen ->
+                        if (currentScreen != screen ) {
+                            currentScreen = screen
+                            // Reset the count of people when switching tabs
+                            onPeopleChanged(1)
+                        }
+                    },
                     currentScreen = currentScreen
                 )
             }
