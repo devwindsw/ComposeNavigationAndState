@@ -25,8 +25,6 @@ import androidx.compose.runtime.setValue
 import com.devwindsw.composenavigationandstate.base.EditableUserInput
 import com.devwindsw.composenavigationandstate.base.UserInput
 
-private const val TAG = "ComposeNavigationAndState"
-
 class PeopleUserInputState() {
     var people by mutableStateOf(1)
         private set // the setter is private and has the default implementation
