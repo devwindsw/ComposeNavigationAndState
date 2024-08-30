@@ -82,6 +82,10 @@ dependencies {
     // ViewModel utilities for Compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
     //implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.4")
+
+    // Kotlin coroutines on Android
+    // https://developer.android.com/kotlin/coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
 }
 
 // Dependency injection with Hilt

@@ -18,10 +18,12 @@ package com.devwindsw.composenavigationandstate
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,8 +51,12 @@ class CustomViewModel @Inject constructor(
 
     fun toDestinationChanged(newDestination: String) {
         Log.i(Constants.TAG, "toDestinationChanged ${newDestination}")
-        val newDestinations = dataRepository.destinations
+        // Use Kotlin coroutines with lifecycle-aware components
+        // https://developer.android.com/topic/libraries/architecture/coroutines#viewmodelscope
+        viewModelScope.launch {
+            val newDestinations = dataRepository.destinations
                 .filter { it.contains(newDestination) }
-        _suggestedDestinations.value = newDestinations
+            _suggestedDestinations.value = newDestinations
+        }
     }
 }
