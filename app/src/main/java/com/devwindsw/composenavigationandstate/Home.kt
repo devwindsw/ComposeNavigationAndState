@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 // https://developer.android.com/develop/ui/compose/libraries#viewmodel
 import androidx.lifecycle.viewmodel.compose.viewModel;
@@ -34,6 +35,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel;
 fun Home(
         modifier: Modifier = Modifier,
         viewModel: CustomViewModel = viewModel()) {
+
+    // Consuming a Flow safely from the ViewModel
+    // https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#3
+    val suggestedDestinations by viewModel.suggestedDestinations.collectAsStateWithLifecycle()
+    suggestedDestinations.forEach { Log.i(Constants.TAG, "suggestedDestination includes ${it}") }
+
     var currentScreen: Destination by remember { mutableStateOf(Fly) }
     val onPeopleChanged: (Int) -> Unit = { viewModel.updatePeople(it) }
     val onToDestinationChanged: (String) -> Unit = { viewModel.toDestinationChanged(it) }

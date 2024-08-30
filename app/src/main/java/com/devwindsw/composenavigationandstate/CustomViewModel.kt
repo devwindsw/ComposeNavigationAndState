@@ -19,6 +19,9 @@ package com.devwindsw.composenavigationandstate
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,11 +31,26 @@ class CustomViewModel @Inject constructor(
     val hotels: List<String> = dataRepository.hotels
     val restaurants: List<String> = dataRepository.restaurants
 
+    // UI state production pipeline
+    // https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#2
+    // https://developer.android.com/kotlin/flow/stateflow-and-sharedflow
+    // Backing property to avoid state updates from other classes
+    private val _suggestedDestinations = MutableStateFlow<List<String>>(emptyList())
+    // The UI collects from this StateFlow to get its state updates
+    val suggestedDestinations: StateFlow<List<String>> = _suggestedDestinations.asStateFlow()
+
+    init {
+        _suggestedDestinations.value = dataRepository.destinations
+    }
+
     fun updatePeople(people: Int) {
         Log.i(Constants.TAG, "updatePeople ${people}")
     }
 
     fun toDestinationChanged(newDestination: String) {
         Log.i(Constants.TAG, "toDestinationChanged ${newDestination}")
+        val newDestinations = dataRepository.destinations
+                .filter { it.contains(newDestination) }
+        _suggestedDestinations.value = newDestinations
     }
 }

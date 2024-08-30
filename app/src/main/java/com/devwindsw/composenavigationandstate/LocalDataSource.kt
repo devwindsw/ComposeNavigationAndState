@@ -39,6 +39,8 @@ class LocalDataSource @Inject constructor() {
 
     val destinations = listOf(
         "Knumbuvalley",
-        "Madrid"
+        "Madrid",
+        "Naples, Italy",
+        "Rome, Italy"
     )
 }
