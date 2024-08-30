@@ -74,8 +74,10 @@ dependencies {
 
     // Dependency injection with Hilt
     // https://developer.android.com/training/dependency-injection/hilt-android
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    // Issue: A failure occurred while executing org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask$KaptExecutionWorkAction
+    // Solution: Changing 2.44 -> 2.51.1
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
     // https://stackoverflow.com/questions/67753666/where-is-the-viewmodel-method-in-androids-compose-state-documentation-coming

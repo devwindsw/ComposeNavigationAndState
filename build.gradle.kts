@@ -6,5 +6,7 @@ plugins {
     // Dependency injection with Hilt
     // https://developer.android.com/training/dependency-injection/hilt-android
     // https://mvnrepository.com/artifact/com.google.dagger/hilt-android-gradle-plugin
-    id("com.google.dagger.hilt.android") version "2.44" apply false
+    // Issue: A failure occurred while executing org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask$KaptExecutionWorkAction
+    // Solution: Changing 2.44 -> 2.51.1
+    id("com.google.dagger.hilt.android") version "2.51.1" apply false
 }

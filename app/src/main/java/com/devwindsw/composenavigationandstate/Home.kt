@@ -39,7 +39,19 @@ fun Home(
     // Consuming a Flow safely from the ViewModel
     // https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#3
     val suggestedDestinations by viewModel.suggestedDestinations.collectAsStateWithLifecycle()
-    suggestedDestinations.forEach { Log.i(Constants.TAG, "suggestedDestination includes ${it}") }
+    if (suggestedDestinations.isEmpty()) {
+        Log.i(
+            Constants.TAG,
+            "suggestedDestination is empty"
+        )
+    } else {
+        suggestedDestinations.forEach {
+            Log.i(
+                Constants.TAG,
+                "suggestedDestination includes ${it}"
+            )
+        }
+    }
 
     var currentScreen: Destination by remember { mutableStateOf(Fly) }
     val onPeopleChanged: (Int) -> Unit = { viewModel.updatePeople(it) }
