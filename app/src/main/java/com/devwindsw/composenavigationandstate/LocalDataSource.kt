@@ -16,23 +16,29 @@
 
 package com.devwindsw.composenavigationandstate
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@HiltViewModel
-class CustomViewModel @Inject constructor(
-    private val dataRepository: CustomDataRepository) : ViewModel() {
+/**
+ * Annotated with Singleton as the class created a lot of objects.
+ * DI: LocalDataSource cannot be provided without an @Inject constructor or an @Provides-annotated method
+ */
+@Singleton
+class LocalDataSource @Inject constructor() {
 
-    val hotels: List<String> = dataRepository.hotels
-    val restaurants: List<String> = dataRepository.restaurants
+    val restaurants = listOf(
+        "Naples",
+        "Dallas",
+        "Cordoba"
+    )
 
-    fun updatePeople(people: Int) {
-        Log.i(Constants.TAG, "updatePeople ${people}")
-    }
+    val hotels = listOf(
+        "Maldivas",
+        "Aspen"
+    )
 
-    fun toDestinationChanged(newDestination: String) {
-        Log.i(Constants.TAG, "toDestinationChanged ${newDestination}")
-    }
+    val destinations = listOf(
+        "Knumbuvalley",
+        "Madrid"
+    )
 }

@@ -27,9 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
+// https://developer.android.com/develop/ui/compose/libraries#viewmodel
+import androidx.lifecycle.viewmodel.compose.viewModel;
+
 @Composable
-fun Home(modifier: Modifier = Modifier) {
-    val viewModel: CustomViewModel = CustomViewModel()
+fun Home(
+        modifier: Modifier = Modifier,
+        viewModel: CustomViewModel = viewModel()) {
     var currentScreen: Destination by remember { mutableStateOf(Fly) }
     val onPeopleChanged: (Int) -> Unit = { viewModel.updatePeople(it) }
     val onToDestinationChanged: (String) -> Unit = { viewModel.toDestinationChanged(it) }

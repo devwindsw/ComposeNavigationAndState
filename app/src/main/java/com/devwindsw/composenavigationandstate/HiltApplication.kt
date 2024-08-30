@@ -16,23 +16,11 @@
 
 package com.devwindsw.composenavigationandstate
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-@HiltViewModel
-class CustomViewModel @Inject constructor(
-    private val dataRepository: CustomDataRepository) : ViewModel() {
-
-    val hotels: List<String> = dataRepository.hotels
-    val restaurants: List<String> = dataRepository.restaurants
-
-    fun updatePeople(people: Int) {
-        Log.i(Constants.TAG, "updatePeople ${people}")
-    }
-
-    fun toDestinationChanged(newDestination: String) {
-        Log.i(Constants.TAG, "toDestinationChanged ${newDestination}")
-    }
+// Dependency injection with Hilt
+// https://developer.android.com/training/dependency-injection/hilt-android
+@HiltAndroidApp
+class HiltApplication : Application() {
 }

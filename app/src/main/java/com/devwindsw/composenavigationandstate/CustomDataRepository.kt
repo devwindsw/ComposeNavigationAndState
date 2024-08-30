@@ -16,23 +16,12 @@
 
 package com.devwindsw.composenavigationandstate
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
-class CustomViewModel @Inject constructor(
-    private val dataRepository: CustomDataRepository) : ViewModel() {
+class CustomDataRepository  @Inject constructor(
+    private val localDataSource: LocalDataSource) {
 
-    val hotels: List<String> = dataRepository.hotels
-    val restaurants: List<String> = dataRepository.restaurants
-
-    fun updatePeople(people: Int) {
-        Log.i(Constants.TAG, "updatePeople ${people}")
-    }
-
-    fun toDestinationChanged(newDestination: String) {
-        Log.i(Constants.TAG, "toDestinationChanged ${newDestination}")
-    }
+    val destinations: List<String> = localDataSource.destinations
+    val hotels: List<String> = localDataSource.hotels
+    val restaurants: List<String> = localDataSource.restaurants
 }

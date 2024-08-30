@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
+    // Dependency injection with Hilt
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -66,4 +70,22 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Dependency injection with Hilt
+    // https://developer.android.com/training/dependency-injection/hilt-android
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+
+    // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    // https://stackoverflow.com/questions/67753666/where-is-the-viewmodel-method-in-androids-compose-state-documentation-coming
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
+    //implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.4")
+}
+
+// Dependency injection with Hilt
+// https://developer.android.com/training/dependency-injection/hilt-android
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
