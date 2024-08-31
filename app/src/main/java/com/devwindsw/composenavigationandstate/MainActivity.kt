@@ -7,6 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.devwindsw.composenavigationandstate.ui.theme.ComposeNavigationAndStateTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +32,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun MainScreen() {
     Surface(color = MaterialTheme.colorScheme.primary) {
-        Home()
+        var showLandingScreen by remember {
+            mutableStateOf(true)
+        }
+        if (showLandingScreen) {
+            LandingScreen(onTimeout = { showLandingScreen = false })
+        } else {
+            Home()
+        }
     }
 }
