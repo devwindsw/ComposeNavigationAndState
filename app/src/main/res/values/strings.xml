@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ComposeNavigationAndState</string>
+    <string name="cd_menu">Menu</string>
 </resources>
