@@ -18,12 +18,17 @@ package com.devwindsw.composenavigationandstate
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import com.devwindsw.composenavigationandstate.base.EditableUserInput
 import com.devwindsw.composenavigationandstate.base.UserInput
+import com.devwindsw.composenavigationandstate.base.rememberEditableUserInputState
+import kotlinx.coroutines.flow.filter
 
 class PeopleUserInputState() {
     var people by mutableStateOf(1)
@@ -60,12 +65,28 @@ fun FromDestination() {
 
 @Composable
 fun ToDestinationUserInput(onToDestinationChanged: (String) -> Unit) {
+    val editableUserInputState = rememberEditableUserInputState(hint = "Choose Destination")
     EditableUserInput(
-        hint = "Choose Destination",
+        state = editableUserInputState,
         caption = "To",
-        vectorImageId = R.drawable.ic_plane,
-        onInputChanged = onToDestinationChanged
+        vectorImageId = R.drawable.ic_plane
     )
+
+    // State holder callers using snapshotFlow
+    // https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#6
+    /* You can trigger a side-effect using LaunchedEffect
+     * every time the input changes and call the onToDestinationChanged lambda.
+     * The snapshotFlow API converts Compose State<T> objects into a Flow.
+     * When the state read inside snapshotFlow mutates,
+     * the Flow will emit the new value to the collector. */
+    val currentOnDestinationChanged by rememberUpdatedState(onToDestinationChanged)
+    LaunchedEffect(editableUserInputState) {
+        snapshotFlow { editableUserInputState.text }
+            .filter { !editableUserInputState.isHint }
+            .collect {
+                currentOnDestinationChanged(editableUserInputState.text)
+            }
+    }
 }
 
 @Composable
