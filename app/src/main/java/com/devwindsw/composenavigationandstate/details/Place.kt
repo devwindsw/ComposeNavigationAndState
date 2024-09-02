@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-package com.devwindsw.composenavigationandstate
+package com.devwindsw.composenavigationandstate.details
 
-import com.devwindsw.composenavigationandstate.details.Place
-import javax.inject.Inject
+import androidx.compose.runtime.Immutable
 
-class CustomDataRepository  @Inject constructor(
-    private val localDataSource: LocalDataSource) {
-
-    val destinations: List<Place> = localDataSource.destinations
-    val hotels: List<Place> = localDataSource.hotels
-    val restaurants: List<Place> = localDataSource.restaurants
-
-    fun getDestination(cityName: String): Place? {
-        return localDataSource.destinations.firstOrNull {
-            it.city.name == cityName
-        }
-    }
+@Immutable
+data class City(
+    val name: String,
+    val country: String,
+    val latitude: String,
+    val longitude: String
+) {
+    val nameToDisplay = "$name, $country"
 }
+
+@Immutable
+data class Place(
+    val city: City,
+    val description: String,
+    val imageUrl: String
+)

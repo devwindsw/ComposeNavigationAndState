@@ -19,6 +19,7 @@ package com.devwindsw.composenavigationandstate
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.devwindsw.composenavigationandstate.details.Place
 import com.devwindsw.composenavigationandstate.di.DefaultDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,16 +36,16 @@ class CustomViewModel @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    val hotels: List<String> = dataRepository.hotels
-    val restaurants: List<String> = dataRepository.restaurants
+    val hotels: List<Place> = dataRepository.hotels
+    val restaurants: List<Place> = dataRepository.restaurants
 
     // UI state production pipeline
     // https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#2
     // https://developer.android.com/kotlin/flow/stateflow-and-sharedflow
     // Backing property to avoid state updates from other classes
-    private val _suggestedDestinations = MutableStateFlow<List<String>>(emptyList())
+    private val _suggestedDestinations = MutableStateFlow<List<Place>>(emptyList())
     // The UI collects from this StateFlow to get its state updates
-    val suggestedDestinations: StateFlow<List<String>> = _suggestedDestinations.asStateFlow()
+    val suggestedDestinations: StateFlow<List<Place>> = _suggestedDestinations.asStateFlow()
 
     init {
         _suggestedDestinations.value = dataRepository.destinations
@@ -61,7 +62,7 @@ class CustomViewModel @Inject constructor(
         viewModelScope.launch {
             val newDestinations = withContext(defaultDispatcher) {
                 dataRepository.destinations
-                    .filter { it.contains(newDestination) }
+                    .filter { it.city.nameToDisplay.contains(newDestination) }
             }
             _suggestedDestinations.value = newDestinations
         }
