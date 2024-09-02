@@ -31,7 +31,8 @@ interface Destination {
         onToDestinationChanged: (String) -> Unit
     ) -> Unit
     val search: @Composable (
-        placeList: List<Place>
+        placeList: List<Place>,
+        onExploreItemClicked: (Place) -> Unit
     ) -> Unit
 }
 
@@ -46,11 +47,14 @@ object Fly : Destination {
             onPeopleChanged, onToDestinationChanged ->
                 FlyScreen(onPeopleChanged = onPeopleChanged, onToDestinationChanged = onToDestinationChanged)
     }
-    override val search: @Composable (placeList: List<Place>) -> Unit = {
-        placeList ->
+    override val search: @Composable (
+        placeList: List<Place>,
+        onExploreItemClicked: (Place) -> Unit) -> Unit = {
+        placeList, onExploreItemClicked ->
             ExploreSection(
                 title = "Explore Flights by Destination",
-                placeList = placeList)
+                placeList = placeList,
+                onItemClicked = onExploreItemClicked)
     }
 
 }
@@ -63,11 +67,14 @@ object Sleep : Destination {
             onPeopleChanged, onToDestinationChanged ->
                 SleepScreen(onPeopleChanged = onPeopleChanged)
     }
-    override val search: @Composable (placeList: List<Place>) -> Unit = {
-        placeList ->
+    override val search: @Composable (
+        placeList: List<Place>,
+        onExploreItemClicked: (Place) -> Unit) -> Unit = {
+            placeList, onExploreItemClicked ->
             ExploreSection(
                 title = "Explore Hotels by Destination",
-                placeList = placeList)
+                placeList = placeList,
+                onItemClicked = onExploreItemClicked)
     }
 }
 
@@ -79,11 +86,14 @@ object Eat : Destination {
             onPeopleChanged, onToDestinationChanged ->
                 EatScreen(onPeopleChanged = onPeopleChanged)
     }
-    override val search: @Composable (placeList: List<Place>) -> Unit = {
-        placeList ->
+    override val search: @Composable (
+        placeList: List<Place>,
+        onExploreItemClicked: (Place) -> Unit) -> Unit = {
+            placeList, onExploreItemClicked ->
             ExploreSection(
                 title = "Explore Hotels by Destination",
-                placeList = placeList)
+                placeList = placeList,
+                onItemClicked = onExploreItemClicked)
     }
 }
 

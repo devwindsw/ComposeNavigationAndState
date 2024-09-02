@@ -11,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.devwindsw.composenavigationandstate.details.Place
+import com.devwindsw.composenavigationandstate.details.launchDetailsActivity
 import com.devwindsw.composenavigationandstate.ui.theme.ComposeNavigationAndStateTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,14 +25,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ComposeNavigationAndStateTheme {
-                MainScreen()
+                MainScreen(onExploreItemClicked = {
+                    launchDetailsActivity(
+                        context = this,
+                        item = it
+                    )
+                })
             }
         }
     }
 }
 
 @Composable
-private fun MainScreen() {
+private fun MainScreen(onExploreItemClicked: (Place) -> Unit) {
     Surface(color = MaterialTheme.colorScheme.primary) {
         var showLandingScreen by remember {
             mutableStateOf(true)
@@ -38,7 +45,7 @@ private fun MainScreen() {
         if (showLandingScreen) {
             LandingScreen(onTimeout = { showLandingScreen = false })
         } else {
-            Home()
+            Home(onExploreItemClicked = onExploreItemClicked)
         }
     }
 }

@@ -38,12 +38,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 // https://developer.android.com/develop/ui/compose/libraries#viewmodel
 import androidx.lifecycle.viewmodel.compose.viewModel;
+import com.devwindsw.composenavigationandstate.details.Place
 import kotlinx.coroutines.launch
 
 @Composable
 fun Home(
         modifier: Modifier = Modifier,
-        viewModel: CustomViewModel = viewModel()) {
+        viewModel: CustomViewModel = viewModel(),
+        onExploreItemClicked: (Place) -> Unit = { }) {
 
     // Consuming a Flow safely from the ViewModel
     // https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#3
@@ -132,9 +134,20 @@ fun Home(
             },
             frontLayerContent = {
                 when(currentScreen) {
-                    Fly -> { currentScreen.search(suggestedDestinations)}
-                    Sleep -> { currentScreen.search(viewModel.hotels)}
-                    Eat -> { currentScreen.search(viewModel.restaurants)}
+                    Fly -> { currentScreen.search(
+                        placeList = suggestedDestinations,
+                        onExploreItemClicked = onExploreItemClicked)
+                    }
+                    Sleep -> {
+                        currentScreen.search(
+                            placeList = viewModel.hotels,
+                            onExploreItemClicked = onExploreItemClicked)
+                    }
+                    Eat -> {
+                        currentScreen.search(
+                            placeList = viewModel.restaurants,
+                            onExploreItemClicked = onExploreItemClicked)
+                    }
                 }
             }
         )
