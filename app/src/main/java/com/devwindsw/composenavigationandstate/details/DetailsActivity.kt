@@ -22,15 +22,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,17 +80,51 @@ class DetailsActivity : ComponentActivity() {
     }
 }
 
+// For produceState
+// https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#8
+data class DetailsUiState(
+    val cityDetails: Place? = null,
+    val isLoading: Boolean = false,
+    val throwError: Boolean = false
+)
+
 @Composable
 fun DetailsScreen(
     onErrorLoading: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailsViewModel = viewModel()
 ) {
-    val cityDetails = remember(viewModel) { viewModel.cityDetails }
-    if (cityDetails.isSuccess) {
-        DetailsContent(cityDetails.getOrNull(), modifier.fillMaxSize())
-    } else {
-        onErrorLoading()
+    // From https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#8
+    /* produceState allows you to convert non-Compose state into Compose State.
+     * It launches a coroutine scoped to the Composition that can push values into the returned State
+     * using the value property.
+     * As with LaunchedEffect, produceState also takes keys to cancel and restart the computation. */
+    val uiState by produceState(initialValue = DetailsUiState(isLoading = true)) {
+        // In a coroutine, this can call suspend functions or move
+        // the computation to different Dispatchers
+        val cityDetailsResult = viewModel.cityDetails
+        value = if (cityDetailsResult.isSuccess) {
+            DetailsUiState(cityDetailsResult.getOrNull())
+        } else {
+            DetailsUiState(throwError = true)
+        }
+    }
+
+    /* depending on the uiState, you show the data,
+     * show the loading screen, or report the error. */
+    when {
+        uiState.cityDetails != null -> {
+            DetailsContent(uiState.cityDetails!!, modifier.fillMaxSize())
+        }
+        uiState.isLoading -> {
+            Box(modifier.fillMaxSize()) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
+        else -> { onErrorLoading() }
     }
 }
 
