@@ -81,6 +81,7 @@ fun ExploreSection(
                 val listState = rememberLazyListState()
                 ExploreList(placeList, onItemClicked, listState = listState)
 
+                // From https://developer.android.com/codelabs/jetpack-compose-advanced-state-side-effects#9
                 // Show the button if the first visible item is past
                 // the first item. We use a remembered derived state to
                 // minimize unnecessary compositions
