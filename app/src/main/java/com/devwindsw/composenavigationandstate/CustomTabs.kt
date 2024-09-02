@@ -28,6 +28,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
@@ -53,7 +57,7 @@ fun CustomTabBar(
 ) {
     Row(modifier) {
         // Separate Row as the children shouldn't have the padding
-        Row(Modifier.padding(top = 16.dp)) {
+        /*Row(Modifier.padding(top = 16.dp)) {
             Surface(color = MaterialTheme.colorScheme.primaryContainer) {
                 Image(
                     modifier = Modifier
@@ -63,6 +67,12 @@ fun CustomTabBar(
                     contentDescription = stringResource(id = R.string.cd_menu)
                 )
             }
+        }*/
+        IconButton(onClick = onMenuClicked) {
+            Icon(
+                imageVector = Icons.Filled.Menu,
+                contentDescription = stringResource(id = R.string.cd_menu)
+            )
         }
         children(
             Modifier
