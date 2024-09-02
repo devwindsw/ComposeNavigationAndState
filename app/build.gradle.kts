@@ -88,6 +88,14 @@ dependencies {
     // Kotlin coroutines on Android
     // https://developer.android.com/kotlin/coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+
+    // Fro BackdropScaffold
+    // https://www.composables.com/material/backdropscaffold
+    implementation("androidx.compose.material:material:1.7.0-rc01")
+
+    // For coil, rememberAsyncImagePainter
+    // https://coil-kt.github.io/coil/compose/
+    implementation("io.coil-kt:coil-compose:2.7.0")
 }
 
 // Dependency injection with Hilt

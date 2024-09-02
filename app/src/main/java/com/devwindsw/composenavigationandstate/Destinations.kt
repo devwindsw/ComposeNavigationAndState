@@ -18,6 +18,8 @@ package com.devwindsw.composenavigationandstate
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.devwindsw.composenavigationandstate.base.ExploreSection
+import com.devwindsw.composenavigationandstate.details.Place
 
 /**
  * Contract for information needed on every custom navigation destination
@@ -27,6 +29,9 @@ interface Destination {
     val screen: @Composable (
         onPeopleChanged: (Int) -> Unit,
         onToDestinationChanged: (String) -> Unit
+    ) -> Unit
+    val search: @Composable (
+        placeList: List<Place>
     ) -> Unit
 }
 
@@ -41,6 +46,13 @@ object Fly : Destination {
             onPeopleChanged, onToDestinationChanged ->
                 FlyScreen(onPeopleChanged = onPeopleChanged, onToDestinationChanged = onToDestinationChanged)
     }
+    override val search: @Composable (placeList: List<Place>) -> Unit = {
+        placeList ->
+            ExploreSection(
+                title = "Explore Flights by Destination",
+                placeList = placeList)
+    }
+
 }
 
 object Sleep : Destination {
@@ -51,6 +63,12 @@ object Sleep : Destination {
             onPeopleChanged, onToDestinationChanged ->
                 SleepScreen(onPeopleChanged = onPeopleChanged)
     }
+    override val search: @Composable (placeList: List<Place>) -> Unit = {
+        placeList ->
+            ExploreSection(
+                title = "Explore Hotels by Destination",
+                placeList = placeList)
+    }
 }
 
 object Eat : Destination {
@@ -60,6 +78,12 @@ object Eat : Destination {
         onToDestinationChanged: (String) -> Unit) -> Unit = {
             onPeopleChanged, onToDestinationChanged ->
                 EatScreen(onPeopleChanged = onPeopleChanged)
+    }
+    override val search: @Composable (placeList: List<Place>) -> Unit = {
+        placeList ->
+            ExploreSection(
+                title = "Explore Hotels by Destination",
+                placeList = placeList)
     }
 }
 
