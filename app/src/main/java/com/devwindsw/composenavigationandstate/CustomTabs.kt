@@ -68,6 +68,7 @@ fun CustomTabBar(
                 )
             }
         }*/
+        // From https://developer.android.com/develop/ui/compose/components/app-bars
         IconButton(onClick = onMenuClicked) {
             Icon(
                 imageVector = Icons.Filled.Menu,
